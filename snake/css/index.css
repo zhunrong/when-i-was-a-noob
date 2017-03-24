@@ -1,0 +1,60 @@
+.map {
+  width: 600px;
+  height: 600px;
+  margin: 0 auto;
+  background: #ccc; }
+  .map ul {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    list-style: none; }
+    .map ul li {
+      width: 6px;
+      height: 6px;
+      margin: 0;
+      padding: 0;
+      background: silver;
+      float: left;
+      position: relative; }
+    .map ul li.snake {
+      background: black; }
+      .map ul li.snake::after {
+        content: "";
+        display: block;
+        width: 10px;
+        height: 10px;
+        border: 1px solid black;
+        border-radius: 50%;
+        position: absolute;
+        top: -3px;
+        left: -3px;
+        z-index: 5; }
+    .map ul li.food {
+      background: red; }
+      .map ul li.food::after {
+        content: "";
+        display: block;
+        width: 10px;
+        height: 10px;
+        border: 1px solid red;
+        border-radius: 50%;
+        position: absolute;
+        top: -3px;
+        left: -3px;
+        z-index: 5;
+        animation: food-blink 2s infinite; }
+
+@keyframes food-blink {
+  0% {
+    width: 8px;
+    height: 8px;
+    top: -2px;
+    left: -2px; }
+  100% {
+    width: 18px;
+    height: 18px;
+    top: -7px;
+    left: -7px; } }
+
+/*# sourceMappingURL=index.css.map */

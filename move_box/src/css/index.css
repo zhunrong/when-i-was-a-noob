@@ -1,0 +1,194 @@
+@charset 'UTF-8';
+.box {
+    width: 600px;
+    height: 600px;
+    background: silver;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -300px;
+    margin-left: -300px;
+}
+ul {
+    list-style: none;
+}
+div,
+ul,
+body,
+li {
+    margin: 0;
+    padding: 0;
+}
+.box li {
+    float: left;
+    background: silver;
+    width: 60px;
+    height: 60px;
+    /*line-height: 60px;*/
+    /*text-align: center;*/
+}
+
+
+.box li.blank {
+    background: white;
+}
+.box li.wall {
+    background: url('../images/bg.gif');
+}
+.box li.hole {
+    background: url('../images/x.png');
+}
+.box li.shit {
+    background: url(../images/box.png) center center no-repeat;
+}
+.box li.people {
+    background: url("../images/people.gif") center center no-repeat;
+}
+
+
+
+/*遮罩层*/
+.bg {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    background: black;
+    top: 0;
+    left: 0;
+    opacity: 0.7;
+    display: none;
+    z-index: 10;
+}
+/*过关提示*/
+.alert {
+    width: 400px;
+    height: 200px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -100px;
+    margin-left: -200px;
+    background: white;
+    /*opacity: 0.9;*/
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    display: none;
+    z-index: 11;
+}
+.alert p {
+    font: 20px '微软雅黑';
+    text-align: center;
+    margin-top: 50px;
+}
+.alertNext {
+    width: 100px;
+    height: 40px;
+    background: silver;
+    font: 16px '微软雅黑';
+    color: white;
+    line-height: 40px;
+    text-align: center;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    margin: 0 auto;
+    margin-top: 40px;
+    cursor: pointer;
+}
+.alertNext:hover {
+    background: grey;
+    /*color: black;*/
+}
+.alertNext:active {
+    background: black;
+}
+/*过关提示*/
+/*计步面板*/
+.panel {
+    width: 200px;
+    /*height: 100px;*/
+    /*background: silver;*/
+    margin-top: 250px;
+    margin-left: 50px;
+    /*position: relative;*/
+}
+.panel p {
+    width: 100%;
+    text-align: center;
+    font: 20px '微软雅黑';
+}
+.panel span {
+    color: red;
+}
+/*计步面板*/
+/*下拉菜单*/
+.panelBtn {
+    width: 44px;
+    height: 44px;
+    /*margin: 0 auto;*/
+    cursor: pointer;
+    /*transition: all 1s;*/
+    /*background: silver;*/
+    position: absolute;
+    top: 10px;
+    left: 130px;
+    z-index: 1;
+}
+.panelBtn div {
+    width: 20px;
+    height: 20px;
+    border: 1px solid white;
+    float: left;
+    background: purple;
+}
+/*.panelBtn:hover {*/
+    /*transform: rotate(360deg);*/
+/*}*/
+.dropShow {
+    width: 420px;
+    height: 100px;
+    background: purple;
+    position: absolute;
+    top: -100px;
+    left: 50%;
+    margin-left: -210px;
+    z-index: 11;
+}
+.dropShow div {
+    height: 100px;
+    width: 140px;
+    float: left;
+    color: white;
+    text-align: center;
+    /*line-height: 100px;*/
+    font: 20px/100px '微软雅黑';
+    cursor: pointer;
+}
+.dropShow div:hover {
+    background: #5a0d80;
+}
+.dropShow div:active {
+    background: #4313c0;
+}
+.dropShow span {
+    display: block;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: purple;
+    color: white;
+    position: absolute;
+    top: -30px;
+    left: 413px;
+    font: 30px/40px '黑体';
+    text-align: center;
+    cursor: pointer;
+}
+.dropShow span:hover {
+    background: red;
+}
+.dropShow span:active {
+    background: purple;
+}
+/*下拉菜单*/

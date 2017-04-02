@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>推箱子游戏 by 陈准荣</title>
+    <link rel="stylesheet" href="src/css/index.css" />
+    <script src='src/js/maps.js'></script>
+    <script src='src/js/index_pro.js'></script>
+</head>
+
+<body>
+
+    <!--游戏布局容器-->
+    <div id="box" class="box"></div>
+
+    <!--弹框遮罩层-->
+    <div class="bg" id="bg"></div>
+
+    <!--过关提示-->
+    <div class="alert" id="alert">
+        <p>恭喜过关！</p>
+        <div class='alertNext' id="alertNext">下一关</div>
+    </div>
+
+    <!--计步，关卡显示-->
+    <div class='panel' id="panel">
+        <p>第<span id="mission">一</span>关</p>
+        <p>已经移动了<span id="stepNum">0</span>步</p>
+
+    </div>
+
+    <!--下拉菜单按钮-->
+    <div class="panelBtn" id="panelBtn">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+    <!--下拉菜单、关卡选择-->
+    <div class="dropShow" id="dropShow">
+        <div id="previous">上一关</div>
+        <div id="restart">重新开始</div>
+        <div id="next">下一关</div>
+        <span id="close">X</span>
+    </div>
+
+</body>
+
+</html>

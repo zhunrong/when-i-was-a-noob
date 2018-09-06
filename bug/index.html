@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>bug</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            user-select: none;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas></canvas>
+    <script src="./js/utils.js"></script>
+    <script src="./js/vector.js"></script>
+    <script src="./js/head.js"></script>
+    <script src="./js/attract.js"></script>
+    <script src="https://cdn.bootcss.com/stats.js/r16/Stats.js"></script>
+    <script>
+        var canvas = document.querySelector('canvas');
+        var ctx = canvas.getContext('2d');
+        resize();
+        var maxa = 2;
+        var maxv = 2;
+        var md = false;
+        var mx = 0;
+        var my = 0;
+        var stats = new Stats();
+        stats.showPanel(1); // 0: fps, 1: ms, 2: mb, 3+: custom
+        stats.domElement.style.position = 'fixed';
+        stats.domElement.style.top = '0';
+        stats.domElement.style.right = '0';
+        document.body.appendChild(stats.domElement);
+
+        window.addEventListener('resize', resize);
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('mousedown', function () {
+            md = true;
+        })
+        window.addEventListener('mouseup', function () {
+            md = false;
+        })
+        window.addEventListener('mousemove', function (e) {
+            mx = e.clientX;
+            my = e.clientY;
+        })
+
+
+        class Group {
+            constructor(options) {
+                this.children = [];
+                this.childrenCount = options.childrenCount;
+
+                this.init();
+            }
+
+            init() {
+                this.head = new Head({
+                    canvas: canvas
+                });
+
+
+                var i = 0;
+                while (i < this.childrenCount) {
+                    this.children.push(new Body({
+                        attractor: i === 0 ? this.head : this.children[i - 1],
+                        i: i,
+                        x: canvas.width / 2,
+                        y: canvas.height / 2,
+                        parent: this,
+                        radius: i < this.childrenCount / 2 ? 8 * (i + 1) : 8 * (this.childrenCount - i - 1)
+                    }));
+                    i++;
+                }
+            }
+
+            draw() {
+                var len = this.children.length;
+                for (var i = len - 1; i >= 0; i--) {
+                    this.children[i].draw();
+                }
+            }
+
+            update() {
+                this.head.update(md);
+
+                var len = this.children.length;
+                for (var i = len - 1; i >= 0; i--) {
+                    this.children[i].update();
+                }
+            }
+        }
+
+        class Body extends Attractor {
+            constructor(options) {
+                super(options);
+                this.i = options.i;
+                this.parent = options.parent;
+                this.radius = options.radius || 0;
+                this.leftTop = {
+                    x: -this.radius,
+                    y: -this.radius
+                }
+                this.rightTop = {
+                    x: this.radius,
+                    y: -this.radius
+                }
+                this.leftBottom = {
+                    x: -this.radius,
+                    y: this.radius
+                }
+                this.rightBottom = {
+                    x: this.radius,
+                    y: this.radius
+                }
+            }
+
+            draw() {
+                var attractor = this.attractor;
+
+                ctx.save();
+                ctx.beginPath();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.rot);
+
+                // 画正方形
+                ctx.rect(-this.radius, -this.radius, 2 * this.radius, 2 * this.radius);
+                ctx.fillStyle = `hsla(${360/this.parent.children.length*this.i},70%,60%,0.3)`;
+                ctx.fill();
+                ctx.restore();
+
+
+                // 画两个正方形之间的连线
+                var dox = attractor.x - this.x; // 圆心x轴偏差
+                var doy = attractor.y - this.y; // 圆心y轴偏差
+
+                var newAttractorLeftTop = utils.rotateCompute.call(attractor.leftTop, attractor.rot);
+                var newAttractorRightTop = utils.rotateCompute.call(attractor.rightTop, attractor.rot);
+                var newAttractorLeftBottom = utils.rotateCompute.call(attractor.leftBottom, attractor.rot);
+                var newAttractorRightBottom = utils.rotateCompute.call(attractor.rightBottom, attractor.rot);
+
+                var newSelfLeftTop = utils.rotateCompute.call(this.leftTop, this.rot);
+                var newSelfRightTop = utils.rotateCompute.call(this.rightTop, this.rot);
+                var newSelfLeftBottom = utils.rotateCompute.call(this.leftBottom, this.rot);
+                var newSelfRightBottom = utils.rotateCompute.call(this.rightBottom, this.rot);
+
+                ctx.save();
+                ctx.beginPath();
+                ctx.translate(this.x, this.y);
+                ctx.moveTo(newSelfLeftTop.x, newSelfLeftTop.y);
+                ctx.lineTo(newAttractorLeftTop.x + dox, newAttractorLeftTop.y + doy);
+                ctx.moveTo(newSelfRightTop.x, newSelfRightTop.y);
+                ctx.lineTo(newAttractorRightTop.x + dox, newAttractorRightTop.y + doy);
+                ctx.moveTo(newSelfLeftBottom.x, newSelfLeftBottom.y);
+                ctx.lineTo(newAttractorLeftBottom.x + dox, newAttractorLeftBottom.y + doy);
+                ctx.moveTo(newSelfRightBottom.x, newSelfRightBottom.y);
+                ctx.lineTo(newAttractorRightBottom.x + dox, newAttractorRightBottom.y + doy);
+                ctx.strokeStyle = `hsla(${360/this.parent.children.length*this.i},70%,60%,0.3)`;
+                ctx.stroke();
+                ctx.restore();
+            }
+        }
+
+        var g = new Group({
+            childrenCount: 6
+        })
+
+        function loop() {
+            requestAnimationFrame(loop);
+            stats.begin();
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            g.update();
+            g.draw();
+            stats.end();
+        }
+
+        loop();
+    </script>
+</body>
+
+</html>

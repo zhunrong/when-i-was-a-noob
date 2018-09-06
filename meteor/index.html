@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>陨石坠落</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: black;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #f87f4b;
+        }
+
+        #canvas {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+</head>
+
+<body>
+    <img src="./images/city.jpg">
+    <canvas id="canvas"></canvas>
+    <script src="./js/utils.js"></script>
+    <script src="./js/Meteor.js"></script>
+    <script src="./js/Rock.js"></script>
+    <script src="./js/LightFlare.js"></script>
+    <script src="./js/Shake.js"></script>
+    <script src="./js/Sky.js"></script>
+    <script src="https://cdn.bootcss.com/stats.js/r16/Stats.js"></script>
+    <script>
+        var canvas = document.getElementById('canvas');
+        var ctx = canvas.getContext('2d');
+
+        var stats = new Stats();
+        stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
+        stats.domElement.style.position = 'fixed';
+        stats.domElement.style.top = '0';
+        stats.domElement.style.right = '0';
+        document.body.appendChild(stats.domElement);
+
+        function resize() {
+            // canvas.width = window.innerWidth;
+            // canvas.height = window.innerHeight;
+            canvas.width = 1197;
+            canvas.height = 628;
+        }
+        resize();
+        window.addEventListener('resize', resize);
+
+
+        var meteors = [];
+        var rocks = [];
+        var lightFlares = [];
+        var bodyShake = new Shake({
+            el: document.querySelector('img')
+        })
+        var sky = new Sky({
+            ctx: ctx
+        })
+
+        /**
+         * 创建火光
+         */
+        function createLightFlare(options) {
+            lightFlares.push(new LightFlare({
+                ctx: ctx,
+                x: options.x,
+                y: options.y
+            }))
+        }
+
+        /**
+         * 创建陨石
+         */
+        function createMetetor() {
+            meteors.push(new Meteor({
+                ctx: ctx,
+                position: {
+                    x: utils.rand(canvas.width, canvas.width * 1.35),
+                    y: utils.rand(-canvas.height * 0.3, -canvas.height * 0.1)
+                },
+                radius: utils.rand(10, 30)
+            }))
+        }
+
+        /**
+         * 创建爆炸石块
+         */
+        function createRock(options) {
+            var count = Math.round(utils.rand(4, 8));
+            var i = 0;
+            var averageRadius = options.radius / count * 2;
+            while (i < count) {
+                rocks.push(new Rock({
+                    ctx,
+                    velocity: {
+                        x: utils.rand(-3, 2),
+                        y: utils.rand(-5, -7)
+                    },
+                    position: {
+                        x: options.x,
+                        y: options.y
+                    },
+                    radius: utils.rand(averageRadius * 0.5, averageRadius * 1.5)
+                }))
+                i++;
+            }
+        }
+
+
+        var meteorCount = 4;
+        var timer = setInterval(() => {
+            meteorCount--;
+            createMetetor();
+            if (meteorCount === 0) {
+                clearInterval(timer);
+            }
+        }, 1000);
+
+        (function loop() {
+            requestAnimationFrame(loop);
+            stats.begin();
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            sky.render();
+
+            meteors.forEach((meteor, i) => {
+                meteor.update();
+                meteor.render();
+                if (!meteor.visible && !meteor.exploded) {
+                    meteor.exploded = true;
+                    var position = meteor.position;
+                    createRock({
+                        x: position.x,
+                        y: canvas.height,
+                        radius: meteor.radius
+                    });
+                    createLightFlare({
+                        x: position.x,
+                        y: position.y
+                    })
+
+                    if (position.x < canvas.width / 2) {
+                        bodyShake.rot -= meteor.radius / 300;
+                    } else {
+                        bodyShake.rot += meteor.radius / 300;
+                    }
+                }
+                if (!meteor.viseble && meteor.shadowArr.length === 0) {
+                    meteors.splice(i, 1);
+                    createMetetor();
+                }
+            })
+
+            rocks.forEach((rock, i) => {
+                rock.update();
+                rock.render();
+                if (!rock.viseble && rock.shadowArr.length === 0) {
+                    rocks.splice(i, 1);
+                }
+            })
+
+            lightFlares.forEach((lightFlare, i) => {
+                lightFlare.update();
+                lightFlare.render();
+                if (lightFlare.opacity < 0) {
+                    lightFlares.splice(i, 1);
+                }
+            })
+
+            bodyShake.update();
+            bodyShake.render();
+
+            stats.end();
+        })()
+    </script>
+</body>
+
+</html>

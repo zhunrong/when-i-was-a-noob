@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-const Home = () => import('../pages/Home.vue');
-const PushBox = () => import('../pages/PushBox.vue');
+const Home = () => import('../pages/home/Home.vue');
+const PushBox = () => import('../pages/pushBox/PushBox.vue');
 Vue.use(VueRouter);
 
 export default new VueRouter({

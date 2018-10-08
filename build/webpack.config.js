@@ -6,7 +6,7 @@ const root = path.resolve(__dirname, '../');
 module.exports = NODE_ENV => ({
     entry: {
         // polyfill: "babel-polyfill",
-        app: path.resolve(__dirname, "../src/index.js")
+        app: path.resolve(__dirname, "../src/index.ts")
     },
     output: {
         path: path.resolve(__dirname, "../dist"),
@@ -33,8 +33,14 @@ module.exports = NODE_ENV => ({
             include: path.resolve(root, 'src')
         }, {
             test: /\.tsx?$/,
-            use: 'ts-loader',
-            include: path.resolve(root, 'src')
+            use: [{
+                loader: 'ts-loader',
+                options: {
+                    appendTsSuffixTo: [/\.vue$/],
+                }
+            }],
+            include: path.resolve(root, 'src'),
+
         }, {
             test: /\.css$/,
             use: ['vue-style-loader', 'style-loader', 'css-loader']

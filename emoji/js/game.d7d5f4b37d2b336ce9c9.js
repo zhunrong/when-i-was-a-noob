@@ -175,18 +175,18 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 /*向量*/
 _tools2.default.load({
-    601: 'https://img.yeba.im/dpm/images/canvas/emoji/601.png',
-    602: 'https://img.yeba.im/dpm/images/canvas/emoji/602.png',
-    603: 'https://img.yeba.im/dpm/images/canvas/emoji/603.png',
-    604: 'https://img.yeba.im/dpm/images/canvas/emoji/604.png',
-    605: 'https://img.yeba.im/dpm/images/canvas/emoji/605.png',
-    606: 'https://img.yeba.im/dpm/images/canvas/emoji/606.png',
-    607: 'https://img.yeba.im/dpm/images/canvas/emoji/607.png',
-    608: 'https://img.yeba.im/dpm/images/canvas/emoji/608.png',
-    609: 'https://img.yeba.im/dpm/images/canvas/emoji/609.png',
-    610: 'https://img.yeba.im/dpm/images/canvas/emoji/610.png',
-    611: 'https://img.yeba.im/dpm/images/canvas/emoji/611.png',
-    612: 'https://img.yeba.im/dpm/images/canvas/emoji/612.png'
+    601: 'https://zhunrong.gitee.io/static/emoji/601.png',
+    602: 'https://zhunrong.gitee.io/static/emoji/602.png',
+    603: 'https://zhunrong.gitee.io/static/emoji/603.png',
+    604: 'https://zhunrong.gitee.io/static/emoji/604.png',
+    605: 'https://zhunrong.gitee.io/static/emoji/605.png',
+    606: 'https://zhunrong.gitee.io/static/emoji/606.png',
+    607: 'https://zhunrong.gitee.io/static/emoji/607.png',
+    608: 'https://zhunrong.gitee.io/static/emoji/608.png',
+    609: 'https://zhunrong.gitee.io/static/emoji/609.png',
+    610: 'https://zhunrong.gitee.io/static/emoji/610.png',
+    611: 'https://zhunrong.gitee.io/static/emoji/611.png',
+    612: 'https://zhunrong.gitee.io/static/emoji/612.png'
 }).then(function (img) {
 
     var pool = [];

@@ -1,4 +1,4 @@
-# 瞎编乱造
+# 瞎编乱造的
 
 1. [贪吃蛇](https://zhunrong.github.io/when-i-was-a-noob/snake '贪吃蛇')
 2. [推箱子](https://zhunrong.github.io/when-i-was-a-noob/move_box '推箱子')
